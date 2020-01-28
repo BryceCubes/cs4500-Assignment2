@@ -1,29 +1,24 @@
 //lang::CwC
 #pragma once
-#include <stdlib.h>
-                                                                                                                                             
-/**                                                                              
- * A class that represents the top of the object hierarchy.                      
- * author: mainly vitekj@me.com */                                                      
-class Object {                                                      
-    public:                                                                                                                                                          
-        /** Default constructor ensure that hash is initialized */                     
-        Object() { }                                                        
-                                                                                        
-        /** Default constructor is virtual to support subclasses */                    
-        virtual ~Object() {}                                                           
-                                                                                        
-        /** Returns the object's hash value. Two objects that are equal should         
-         * have the same hash; object's that are not, may have the same hash.          
-         * Subclasses should implement hash_me_(). */                                  
-        size_t hash() { }               
-                                                                                                                                                                        
-        /** Use the address of the other object to determine equality. */              
-        virtual bool equals(Object* other) { }                   
-                                                                                        
-        /** Return a newly allocated string describin the object */                    
-        virtual char* to_string() { }                      
-                                                                                        
-        /** Print to stdout. */                                                        
-        virtual void print() { }                                                                                                                    
-};   
+
+#include <stdio.h>
+
+class Object {
+public:
+
+	// Default constructor
+	Object() {}
+
+	// Destructor
+	~Object() {}
+
+	virtual bool equals(Object* that) {
+		return this->hash() == that->hash();
+	}
+
+	virtual size_t hash() {
+		// this type of cast is used because we want to use
+		// its address as hash
+		return reinterpret_cast<size_t>(this);
+	}
+};

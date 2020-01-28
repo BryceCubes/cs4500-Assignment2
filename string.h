@@ -1,49 +1,53 @@
-//lang::CwC    
-#pragma once                                                                                                                                       
-#include "object.h"                                                              
-#include <stdlib.h>
+//lang::CwC
+#pragma once
+#include "object.h"
+#include <string.h>
+#include <ctype.h>
 
-/**                                                                              
- * An immutable string class. Values passed in are copied and deleted            
- * upon destruction.                                                             
- * author: mainly vitekj@me.com                                                         
- */                                                                              
-class String : public Object {      
-    public:                       
-        /** Construct a string copying s */                                            
-        String(char* s) { }                                                                              
-                                                                                        
-        /** Construct a string copying s */                                            
-        String(const char* s) {}                                                                              
-                                                                                        
-        /** This constructor takes ownership of the char* s. The char*                 
-         *  will be delete with the string. Use with caution. The first                
-         *  argument is there to differentiate this constructor from the               
-         *  standard one. */                                                           
-        String(bool steal, char* s){ }                                                                              
-                                                                                        
-        /** Delete the string and free its data */                                     
-        ~String () { }                                                  
-                                                                                        
-        /** Compare strings for equality. */                                           
-        bool equals(Object* other) { }                                                                              
-                                                                                                
-        /** Returns 0 if strings are equal, >0 if this string is larger,               
-         *  <0 otherwise */                                                            
-        int compare(String* tgt) { }                   
-                                                                                        
-        /** Textbook hash function on strings.   */                                    
-        size_t hash_me_() { }                                                                              
-                                                                                        
-        /** Number of non \0 characters in this string */                              
-        size_t size() { }                                                
-                                                                                        
-        /** Concatenate the strings, return a new object */                            
-        String* concat(String* other) { }                                                                              
-                                                                                        
-        /** Return a newly allocated char* with this string value */                   
-        char* to_string() { }                                  
-                                                                                        
-        /** Print this string on stdout. */                                            
-        void print() { }                             
-};         
+class String : public Object {
+public:
+	const char* value_;
+	size_t length_;
+
+	// Default constructor
+	String() : Object() {
+		length_ = 0;
+		value_ = "";
+	}
+
+	String(const char* value) : Object() {
+		length_ = strlen(value);
+		value_ = value;
+	}
+
+	// Destructor
+	virtual ~String() {}
+
+	virtual bool equals(Object* that) {
+		// if given object is a string
+		if (dynamic_cast<String*>(that) == nullptr)
+		{
+			return false;
+		}
+
+		return strcmp(value_, dynamic_cast<String*>(that)->value_) == 0;
+	}
+
+	virtual size_t hash() {
+		size_t hash = 0;
+
+		for (size_t i = 0; i < length_; i++) {
+			hash = hash * 10 + value_[i];
+		}
+
+		return hash;
+	}
+
+	virtual const char* getValue() {
+		return value_;
+	}
+
+	size_t getLength() {
+		return length_;
+	}
+};
