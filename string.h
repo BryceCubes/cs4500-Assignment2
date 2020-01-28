@@ -1,5 +1,5 @@
-#pragma once                                                                     
-//lang::CwC                                                                      
+//lang::CwC    
+#pragma once                                                                                                                                       
 #include "object.h"                                                              
 #include <stdlib.h>
 

@@ -1,4 +1,5 @@
-//lang:CwC
+//lang::CwC
+#pragma once
 #include "object.h"
 
 // Represents a Map object of Objects to Objects
