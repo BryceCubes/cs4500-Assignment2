@@ -33,7 +33,7 @@ third:
 	- rm -rf ./part1/test-map
 	git clone $(MAPSPECREPO) ./part1/test-map
 	cd ./part1/test-map; git checkout $(MAPSPECHASH)
-	cd ./part1; cp array.h queue.h map.h string.h object.h Makefile ./test-map
+	cd ./part1; cp array.h queue.h map.h string.h object.h Makefile pair.h ./test-map
 #	TODO: cp anything else to compile and run e.g. googletests? my-tests.cpp edited-tests.cpp 
 	- docker run -ti -v `pwd`:/test cs4500:0.1 bash -c "cd /test/part1/test-map ; make testMap"
 
