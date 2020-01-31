@@ -36,5 +36,4 @@ We created a Pair structure that has 3 fields: the key Object, the value Object,
 
 ## Map Repository
 The API for Map was fairly robust other than a few design choices that we wouldn't have made, but didn't have too much trouble implementing. We had hoped for a Map constructor that would take in a size_t to define the allocated size of the Map. Similarly, we would've appreciated a method for returning the allocated size of the map as well as the number of elements instead of only the latter.
-Because it seems that this repo was used by many teams, any issues I ran into were already brought up and resolved by the team by the time I noticed. Their tests were not very exhaustive at first but they added some more tests as pull requests came in and were generally fairly responsive.
-
+Because it seems that this repo was used by many teams, any issues I ran into were already brought up and resolved by the team by the time I noticed. Their tests were not very exhaustive at first but they added some more tests as pull requests came in and were generally fairly responsive. They did have some last minute changes that were inconvenient, but they were manageable. 

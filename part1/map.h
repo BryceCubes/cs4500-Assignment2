@@ -35,6 +35,49 @@ public:
         delete[] pairs_;
     }
 
+    /* Inherited from Object, generates a hash for a Map */
+    virtual size_t hash()
+    {
+        size_t hash = 0;            // start hash counter
+        Object **keys = get_keys(); // get list of keys
+        for (int i = 0; i < elements_; i++)
+        {
+            Pair hashpair = pairs_[getHash(keys[i], size_)]; // get pair for key
+            hash * 10 + hashpair.hash();                     // add hashed pair
+        }
+        return hash;
+    }
+
+    /* Inherited from Object, checks equality between a Map and an Object*/
+    virtual bool equals(Object *that)
+    {
+        if (dynamic_cast<Map *>(that) == nullptr)
+        { //check that it is map
+            return false;
+        }
+        Map *temp = dynamic_cast<Map *>(that);
+
+        if (size() != temp->size())
+        { // check sizes first
+            return false;
+        }
+
+        Object **thiskeys = get_keys(); // get keys
+        Object **thatkeys = temp->get_keys();
+        size_t tempsize = size(); //size for going through keys
+        bool allsame = true;      // tracks if all values are equal
+
+        for (int i = 0; i < tempsize; i++)
+        {
+            if (!get(thiskeys[i])->equals(get(thatkeys[i])))
+            {
+                allsame = false; // not equal
+                break;
+            }
+        }
+        return allsame;
+    }
+
     // associates the value with the key in this map
     virtual void put(Object *key, Object *value)
     {
@@ -78,12 +121,13 @@ public:
     }
 
     // returns the number of key value pairs in this map
-    int size()
+    size_t size()
     {
         return elements_; // returns the number of elements in the Map
     }
 
     // removes the key value pair in this map
+    // and returns the value
     Object *remove(Object *key)
     {
         Object *deaditem = get(key); // retrieve dead item
@@ -119,7 +163,6 @@ public:
     }
 
     // returns an array of copied keys in map, not sorted
-    // call size to determine the number String*
     Object **get_keys()
     {
         Object **allkeys = new Object *[elements_]; // make an array of keys
@@ -159,45 +202,5 @@ public:
     size_t getHash(Object *key, size_t mod)
     {
         return key->hash() % mod; // use the Object's hash method and mod it by given size
-    }
-
-    virtual bool equals(Object *that)
-    {
-        if (dynamic_cast<Map *>(that) == nullptr)
-        { //check that it is map
-            return false;
-        }
-        Map *temp = dynamic_cast<Map *>(that);
-
-        if (size() != temp->size())
-        { // check sizes first
-            return false;
-        }
-
-        Object **thiskeys = get_keys(); // get keys
-        Object **thatkeys = temp->get_keys();
-        size_t tempsize = size(); //size for going through keys
-        bool allsame = true;      // tracks if all values are equal
-
-        for (int i = 0; i < tempsize; i++)
-        {
-            if (!get(thiskeys[i])->equals(get(thatkeys[i])))
-            {
-                allsame = false; // not equal
-                break;
-            }
-        }
-        return allsame;
-    }
-
-    virtual size_t hash()
-    {
-        size_t hash = 0;            // start hash counter
-        Object **keys = get_keys(); // get list of keys
-        for (int i = 0; i < elements_; i++)
-        {
-            Pair hashpair = pairs_[getHash(keys[i], size_)]; // get pair for key
-            hash * 10 + hashpair.hash();                     // add hashed pair
-        }
     }
 };
