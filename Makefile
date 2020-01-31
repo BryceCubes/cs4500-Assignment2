@@ -1,7 +1,7 @@
-ARRAYSPECREPO = https://github.com/example/array-api.git
-ARRAYSPECHASH = 53f19236cd14f1f691781558c4db45794bc635bf
-QUEUESPECREPO = https://github.com/example/queue-api.git
-QUEUESPECHASH = f94340be53a497b8018464046c5de68a0b4a307d
+ARRAYSPECREPO = https://github.com/angeliama98/CS4500-A1-Part2.git
+ARRAYSPECHASH = 5be2a8b94b34132afe899bf8c98512933ad3ae44
+QUEUESPECREPO = https://github.com/kylesferrazza/swdev-a1-p2.git
+QUEUESPECHASH = 3168375d54aa7364309aaa8469128fcb7e6e8d21
 MAPSPECREPO = https://github.com/dxandbatista/map-api.git
 MAPSPECHASH = 39dc2e804ac4646c886db383a8277c36283670df
 
@@ -15,7 +15,7 @@ first:
 	- rm -rf ./part1/test-array
 	git clone $(ARRAYSPECREPO) ./part1/test-array
 	cd ./part1/test-array; git checkout $(ARRAYSPECHASH)
-	cd ./part1; cp array.h queue.h map.h string.h object.h Makefile ./test-array 
+	cd ./part1; cp array.h queue.h map.h string.h object.h Makefile boolean.h integer.h float.h test-array.cpp ./test-array 
 #	TODO: cp anything else to compile and run e.g. googletests? my-tests.cpp edited-tests.cpp 
 	- docker run -ti -v `pwd`:/test cs4500:0.1 bash -c "cd /test/part1/test-array ; make testArray"
 
