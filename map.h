@@ -30,6 +30,7 @@ class Map : public Object {
             pairs_ = new Pair[size_];
             elements_ = 0;
             clear();
+            printf("finished constructor \n");
         }
 
         // default destructor
@@ -46,6 +47,7 @@ class Map : public Object {
             } else {
                 rehash(*addpair); // rehash if key address not unique
             }
+            printf("finished put \n");
         }
 
         // returns the value associated this key in the map
@@ -56,16 +58,19 @@ class Map : public Object {
                 printf("Object key does not exist in map");
                 exit(1);
             }
+            printf("finished get \n");
         }
 
         // checks if the map contains a value with this key
         bool contains(Object* key) {
             return !pairs_[getHash(key, size_)].getNull(); // checks if there is an empty Pair at key
+            printf("finished contains \n");
         }
 
         // returns the number of key value pairs in this map
         int size() {
             return elements_; // returns the number of elements in the Map
+            printf("finished size \n");
         }
 
         // removes the key value pair in this map
@@ -80,6 +85,7 @@ class Map : public Object {
                 printf("Object key does not exist in map");
                 exit(1);
             }
+            printf("finished remove \n");
         }
 
         // clears the map
@@ -89,11 +95,13 @@ class Map : public Object {
                 pairs_[i] = *nullpair; // set all locations equal to this and overwrite old data
             }
             elements_ = 0; // set element # back to 0
+            printf("finished clear \n");
         }
 
         // creates a clone of this map
         Map* clone() {
             return new Map(this); //TODO: does this work???
+            printf("finished clone \n");
         }
 
         // returns an array of copied keys in map, not sorted
@@ -108,6 +116,7 @@ class Map : public Object {
                 }
             }
             return allkeys; // return list of keys
+            printf("finished getkeys \n");
         }
 
         // private method to rehash and expand when collision is found and add new item
@@ -126,10 +135,12 @@ class Map : public Object {
             pairs_ = newpairs; // sets the list of pairs to the new list
             elements_++; // incremement number of elements with new item added
             delete[] oldpairs; // delete the old array of Pairs
+            printf("finished rehash \n");
         }
 
         // private method returns the hash value for the given key
         size_t getHash(Object* key, size_t mod) {
             return key->hash() % mod; // use the Object's hash method and mod it by given size
+            printf("finished getHash \n");
         }
 };
