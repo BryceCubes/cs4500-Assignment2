@@ -1,1 +1,1 @@
-https://github.com/BryceCubes/Assignment-1-Part-2
+https://github.com/BryceCubes/assignment-1-part-2

@@ -161,7 +161,7 @@ public:
         return key->hash() % mod; // use the Object's hash method and mod it by given size
     }
 
-    bool equals(Object *that)
+    virtual bool equals(Object *that)
     {
         if (dynamic_cast<Map *>(that) == nullptr)
         { //check that it is map
@@ -190,7 +190,7 @@ public:
         return allsame;
     }
 
-    size_t hash()
+    virtual size_t hash()
     {
         size_t hash = 0;            // start hash counter
         Object **keys = get_keys(); // get list of keys

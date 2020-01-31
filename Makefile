@@ -2,8 +2,8 @@ ARRAYSPECREPO = https://github.com/angeliama98/CS4500-A1-Part2.git
 ARRAYSPECHASH = 5be2a8b94b34132afe899bf8c98512933ad3ae44
 QUEUESPECREPO = https://github.com/kylesferrazza/swdev-a1-p2.git
 QUEUESPECHASH = 3168375d54aa7364309aaa8469128fcb7e6e8d21
-MAPSPECREPO = https://github.com/dxandbatista/map-api.git
-MAPSPECHASH = 39dc2e804ac4646c886db383a8277c36283670df
+MAPSPECREPO = https://github.com/az0977776/cs4500-a1p2-design.git
+MAPSPECHASH = ff9ccbce51f8bdf182455580eb8cc2e585a64670
 
 run: dircheck
 	- make first

@@ -44,7 +44,7 @@ public:
     }
 
     // Determines whether this is equal to the given Object
-    bool equals(Object *that)
+    virtual bool equals(Object *that)
     {
         if (dynamic_cast<Pair *>(that) == nullptr)
         {
@@ -55,7 +55,7 @@ public:
     }
 
     // Hashes the key and value to a number
-    size_t hash()
+    virtual size_t hash()
     {
         size_t hash = 0;
         hash += ((key_->hash() * 10) + value_->hash());
