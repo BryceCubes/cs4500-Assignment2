@@ -52,7 +52,7 @@ public:
 	}
 
 	// check if this array equals to other array
-	virtual bool equals(Array* other) {
+	virtual bool equals(Object* other) {
 		// if not string list
 		if (dynamic_cast<Array*>(other) == nullptr)
 		{
@@ -97,7 +97,7 @@ public:
 		}
 
 		for (size_t i = 0; i < s->currentSize_; i++) {
-			ret->add(array_[i]);
+			ret->add(s->array_[i]);
 		}
 
 		return ret;
@@ -172,10 +172,12 @@ public:
 		for (size_t i = 0; i < currentSize_; i++) {
 			array_[i] = nullptr;
 		}
+		currentSize_ = 0;
 	}
 };
 
 class StrArray : public Array {
+public:
 	// constructor
 	StrArray() : Array() {}
 
@@ -183,9 +185,7 @@ class StrArray : public Array {
 	StrArray(size_t size) : Array(size) {}
 
 	// deconstructor
-	virtual ~StrArray() {
-		delete[] array_;
-	}
+	virtual ~StrArray() {}
 
 	virtual StrArray* append(StrArray* s) {
 		size_t totalSize = currentSize_ + s->currentSize_;
@@ -196,7 +196,7 @@ class StrArray : public Array {
 		}
 
 		for (size_t i = 0; i < s->currentSize_; i++) {
-			ret->add(array_[i]);
+			ret->add(s->array_[i]);
 		}
 
 		return ret;
@@ -233,6 +233,7 @@ class StrArray : public Array {
 };
 
 class BoolArray : public Array {
+public:
 	// constructor
 	BoolArray() : Array() {}
 
@@ -240,9 +241,7 @@ class BoolArray : public Array {
 	BoolArray(size_t size) : Array(size) {}
 
 	// deconstructor
-	virtual ~BoolArray() {
-		delete[] array_;
-	}
+	virtual ~BoolArray() {}
 
 	virtual BoolArray* append(BoolArray* s) {
 		size_t totalSize = currentSize_ + s->currentSize_;
@@ -253,7 +252,7 @@ class BoolArray : public Array {
 		}
 
 		for (size_t i = 0; i < s->currentSize_; i++) {
-			ret->add(array_[i]);
+			ret->add(s->array_[i]);
 		}
 
 		return ret;
@@ -277,11 +276,16 @@ class BoolArray : public Array {
 	}
 
 	virtual void set(size_t index, Object* o) {
-		if (dynamic_cast<Integer*>(o) == nullptr) {
+		if (dynamic_cast<Boolean*>(o) == nullptr) {
 			printf("Expected bool is given for boolarray set\n");
 			exit(1);
 		}
 		Array::set(index, o);
+	}
+
+	virtual void set(size_t index, bool b) {
+		Boolean* box = new Boolean(b);
+		Array::set(index, box);
 	}
 
 	virtual Boolean* remove(size_t index) {
@@ -290,6 +294,7 @@ class BoolArray : public Array {
 };
 
 class IntArray : public Array {
+public:
 	// constructor
 	IntArray() : Array() {}
 
@@ -297,9 +302,7 @@ class IntArray : public Array {
 	IntArray(size_t size) : Array(size) {}
 
 	// deconstructor
-	virtual ~IntArray() {
-		delete[] array_;
-	}
+	virtual ~IntArray() {}
 
 	virtual IntArray* append(IntArray* s) {
 		size_t totalSize = currentSize_ + s->currentSize_;
@@ -310,7 +313,7 @@ class IntArray : public Array {
 		}
 
 		for (size_t i = 0; i < s->currentSize_; i++) {
-			ret->add(array_[i]);
+			ret->add(s->array_[i]);
 		}
 
 		return ret;
@@ -341,12 +344,18 @@ class IntArray : public Array {
 		Array::set(index, o);
 	}
 
+	virtual void set(size_t index, int i) {
+		Integer* box = new Integer(i);
+		Array::set(index, box);
+	}
+
 	virtual Integer* remove(size_t index) {
 		return dynamic_cast<Integer*>(Array::remove(index));
 	}
 };
 
 class FloatArray : public Array {
+public:
 	// constructor
 	FloatArray() : Array() {}
 
@@ -354,9 +363,7 @@ class FloatArray : public Array {
 	FloatArray(size_t size) : Array(size) {}
 
 	// deconstructor
-	virtual ~FloatArray() {
-		delete[] array_;
-	}
+	virtual ~FloatArray() {}
 
 	virtual FloatArray* append(FloatArray* s) {
 		size_t totalSize = currentSize_ + s->currentSize_;
@@ -367,7 +374,7 @@ class FloatArray : public Array {
 		}
 
 		for (size_t i = 0; i < s->currentSize_; i++) {
-			ret->add(array_[i]);
+			ret->add(s->array_[i]);
 		}
 
 		return ret;
@@ -396,6 +403,11 @@ class FloatArray : public Array {
 			exit(1);
 		}
 		Array::set(index, o);
+	}
+
+	virtual void set(size_t index, float f) {
+		Float* box = new Float(f);
+		Array::set(index, box);
 	}
 
 	virtual Float* remove(size_t index) {

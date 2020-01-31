@@ -44,7 +44,7 @@ public:
     }
 
     // Push an object onto the front of the queue.
-    virtual void push_front(Object* o) {
+    virtual void push(Object* o) {
         if (currentSize_ >= allocatedSize_) {
             printf("The queue is full and cannot push more elements\n");
             exit(1);
@@ -58,7 +58,7 @@ public:
     }
 
     // Pop the last item off of the queue and return it.
-    virtual Object* pop_end() {
+    virtual Object* pop() {
         if (currentSize_ <= 0) {
             printf("The queue is empty and cannot pop any element\n");
             exit(1);
@@ -74,7 +74,7 @@ public:
     }
 
     // Return the last item in the queue without removing it.
-    virtual Object* peek_end() {
+    virtual Object* peek() {
         if (currentSize_ <= 0) {
             printf("The queue is empty and cannot peek any element\n");
             exit(1);
@@ -114,7 +114,7 @@ public:
 
         // compare each element in the list
         for (size_t i = 0; i < currentSize_; i++) {
-            if (!queue_[(headIndex_+i)%allocatedSize_]->equals(temp_queue[(temp->headIndex_+1) % (temp->allocatedSize_)])) {
+            if (!queue_[(headIndex_+i)%allocatedSize_]->equals(temp_queue[(temp->headIndex_+i) % (temp->allocatedSize_)])) {
                 return false;
             }
         }
@@ -151,31 +151,29 @@ public:
     StrQueue(size_t size) : Queue(size) {
     }
 
-    virtual ~StrQueue() {
-        delete[] queue_;
-    }
+    virtual ~StrQueue() {}
 
     // Push a String onto the front of the queue.
-    virtual void push_front(String* s) {
-        Queue::push_front(s);
+    virtual void push(String* s) {
+        Queue::push(s);
     }
 
-    virtual void push_front(Object* o) {
+    virtual void push(Object* o) {
         if (dynamic_cast<String*>(o) == nullptr)
         {
             printf("Only push string into strqueue\n");
             exit(1);
         }
-        Queue::push_front(o);
+        Queue::push(o);
     }
 
     // Pop the last String off of the queue and return it.
-    virtual String* pop_end() {
-        return dynamic_cast<String*>(Queue::pop_end());
+    virtual String* pop() {
+        return dynamic_cast<String*>(Queue::pop());
     }
 
     // Return the last String in the queue without removing it.
-    virtual String* peek_end() {
-        return dynamic_cast<String*>(Queue::peek_end());
+    virtual String* peek() {
+        return dynamic_cast<String*>(Queue::peek());
     }
 };
