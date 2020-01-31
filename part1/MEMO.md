@@ -6,10 +6,10 @@ In order to increase effiency, we decide to make queue size to be finite(throw e
 Doing it this way, every time we perform pop operation, instead of shifting elements to left, we simply move head index(O(1)).
 For push operation, simply push the element into the tail index of the queue, so it's constant time.
 Making queue capacity finite is beneficial for push and pop operation, and the project description saying that we will use these two operations intensively. Since we trust it will push and pop frequently, having finite capacity is not a big concern (and users can set the capacity, too).
-For StrQueue, in addition to functionalities provided by Queue, we also push pushing string, poping string and peeking string.
+For StrQueue, in addition to functionalities provided by Queue, we also support pushing string, poping string and peeking string.
 ## Queue repository:
-The documentation of queue was very confusing. The spec team documents the behavior of push and pop as stack(last in, first out). Moreover, their tests were also written that way.
-In order to confirm the problem, I opened an issue in the spec team's repository. They responded very quickly (within 10 minutes) and fixed the tests right away.
+The documentation of queue was very confusing at first. The spec team documented the behavior of push and pop as stack(last in, first out). Moreover, their tests were also written that way.
+In order to confirm the problem, I opened an issue in the spec team's repository. They responded very quickly (within 10 minutes) and fixed the tests and documentation right away.
 The test coverage is thorough and our team don't need to write extra tests. Every method was tested and we have founded out (and fixed) several bugs in our code with the given tests.
 The spec team was very easy to work with. Their documentation was very clear (after the update) and their tests covered the api thoroughly.
 
