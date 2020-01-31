@@ -11,30 +11,30 @@
 
 class Array : public Object {
 public:
-	Object** array_; //owned -> means responsible for deleting
+	Object** array_;
 	size_t allocatedSize_;
 	size_t currentSize_;
 
-	// constructor
+	// set default allocated size to 10
 	Array() : Object() {
 		currentSize_ = 0;
 		allocatedSize_ = 10;
 		array_ = new Object*[allocatedSize_];
 	}
 
-	// constructor
+	// set allocated size to the given size
 	Array(size_t size) : Object() {
 		currentSize_ = 0;
 		allocatedSize_ = size;
 		array_ = new Object * [allocatedSize_];
 	}
 
-	// deconstructor
+	// destructor
 	virtual ~Array() {
 		delete[] array_;
 	}
 
-	// increase the string array size by factor of 2
+	// private helper increase the string array size by factor of 2
 	void allocate_space() {
 		allocatedSize_ = allocatedSize_ * 2;
 		Object** temp = array_;
@@ -53,7 +53,7 @@ public:
 
 	// check if this array equals to other array
 	virtual bool equals(Object* other) {
-		// if not string list
+		// if not array
 		if (dynamic_cast<Array*>(other) == nullptr)
 		{
 			return false;
@@ -68,7 +68,7 @@ public:
 
 		Object** temp_array = temp->array_;
 
-		// compare each element in the list
+		// compare each element in the array
 		for (size_t i = 0; i < currentSize_; i++) {
 			if (!array_[i]->equals(temp_array[i])) {
 				return false;
@@ -87,7 +87,7 @@ public:
 		return hash;
 	}
 
-	// append two Arrays
+	// append two Arrays and returns a pointer to the new array
 	virtual Array* append(Array* s) {
 		size_t totalSize = currentSize_ + s->currentSize_;
 
@@ -128,7 +128,7 @@ public:
 	virtual void set(size_t index, Object* o) {
 		// validate the index first
 		if (index >= currentSize_) {
-			printf("Invalid index is provided");
+			printf("Invalid index is provided\n");
 			exit(1);
 		}
 
@@ -157,14 +157,14 @@ public:
 		return removed;
 	}
 
-	// get the index of the given object
+	// get the index of the given object, if not found, return value > size
 	virtual size_t index_of(Object* o) {
 		for (size_t i = 0; i < currentSize_; i++) {
 			if (array_[i]->equals(o)) {
 				return i;
 			}
 		}
-		return -1;
+		return currentSize_ + 1;
 	}
 
 	// remove all elements in the array
@@ -184,9 +184,10 @@ public:
 	// constructor
 	StrArray(size_t size) : Array(size) {}
 
-	// deconstructor
+	// destructor
 	virtual ~StrArray() {}
 
+	// append strarray with another strarray, return the new array
 	virtual StrArray* append(StrArray* s) {
 		size_t totalSize = currentSize_ + s->currentSize_;
 
@@ -202,11 +203,14 @@ public:
 		return ret;
 	}
 
+	// override get to return string
 	virtual String* get(size_t index) {
 		return dynamic_cast<String*>(Array::get(index));
 	}
 
+	// adding an object to the array
 	virtual void add(Object* o) {
+		// validate it's a string
 		if (dynamic_cast<String*>(o) == nullptr) {
 			printf("Expected string is given for strarray add\n");
 			exit(1);
@@ -214,12 +218,15 @@ public:
 		Array::add(o);
 	}
 
+	// add string to the array, for common use
 	virtual void add(const char* s) {
 		String* box = new String(s);
 		Array::add(box);
 	}
 
+	// replace element at the given index with the given object
 	virtual void set(size_t index, Object* o) {
+		//validate the object is string
 		if (dynamic_cast<String*>(o) == nullptr) {
 			printf("Expected string is given for strarray set\n");
 			exit(1);
@@ -227,6 +234,7 @@ public:
 		Array::set(index, o);
 	}
 
+	// remove string at given index
 	virtual String* remove(size_t index) {
 		return dynamic_cast<String*>(Array::remove(index));
 	}
@@ -240,9 +248,10 @@ public:
 	// constructor
 	BoolArray(size_t size) : Array(size) {}
 
-	// deconstructor
+	// destructor
 	virtual ~BoolArray() {}
 
+	// append a bool array and return a pointer of the new bool array
 	virtual BoolArray* append(BoolArray* s) {
 		size_t totalSize = currentSize_ + s->currentSize_;
 
@@ -258,11 +267,14 @@ public:
 		return ret;
 	}
 
+	// get the boolean at the given index
 	virtual Boolean* get(size_t index) {
 		return dynamic_cast<Boolean*>(Array::get(index));
 	}
 
+	// add the given object into the array
 	virtual void add(Object* o) {
+		// validate teh object is a boolean
 		if (dynamic_cast<Boolean*>(o) == nullptr) {
 			printf("Expected bool is given for boolarray add\n");
 			exit(1);
@@ -270,12 +282,15 @@ public:
 		Array::add(o);
 	}
 
+	// add a bool value into array, for common use
 	virtual void add(bool b) {
 		Boolean* box = new Boolean(b);
 		Array::add(box);
 	}
 
+	// replace the element at the given index with the given object
 	virtual void set(size_t index, Object* o) {
+		// validate given object is a boolean
 		if (dynamic_cast<Boolean*>(o) == nullptr) {
 			printf("Expected bool is given for boolarray set\n");
 			exit(1);
@@ -283,11 +298,13 @@ public:
 		Array::set(index, o);
 	}
 
+	// replace the element at the given index with the given bool
 	virtual void set(size_t index, bool b) {
 		Boolean* box = new Boolean(b);
 		Array::set(index, box);
 	}
 
+	// remove and return the boolean at the given index
 	virtual Boolean* remove(size_t index) {
 		return dynamic_cast<Boolean*>(Array::remove(index));
 	}
@@ -301,9 +318,10 @@ public:
 	// constructor
 	IntArray(size_t size) : Array(size) {}
 
-	// deconstructor
+	// destructor
 	virtual ~IntArray() {}
 
+	// append the given intarray and return a pointer of the new intarray
 	virtual IntArray* append(IntArray* s) {
 		size_t totalSize = currentSize_ + s->currentSize_;
 
@@ -319,11 +337,14 @@ public:
 		return ret;
 	}
 
+	// get the integer at the given index
 	virtual Integer* get(size_t index) {
 		return dynamic_cast<Integer*>(Array::get(index));
 	}
 
+	// add the given object into the array
 	virtual void add(Object* o) {
+		// validate the object is an integer
 		if (dynamic_cast<Integer*>(o) == nullptr) {
 			printf("Expected int is given for intarray add\n");
 			exit(1);
@@ -331,12 +352,15 @@ public:
 		Array::add(o);
 	}
 
+	// add the given int into the array, for common use
 	virtual void add(int i) {
 		Integer* box = new Integer(i);
 		Array::add(box);
 	}
 
+	// replace the element at the given index with the given object
 	virtual void set(size_t index, Object* o) {
+		// validate the object is an integer
 		if (dynamic_cast<Integer*>(o) == nullptr) {
 			printf("Expected int is given for intarray set\n");
 			exit(1);
@@ -344,11 +368,13 @@ public:
 		Array::set(index, o);
 	}
 
+	// replace the element at the given index with the given int
 	virtual void set(size_t index, int i) {
 		Integer* box = new Integer(i);
 		Array::set(index, box);
 	}
 
+	// remove and return the element at the given index
 	virtual Integer* remove(size_t index) {
 		return dynamic_cast<Integer*>(Array::remove(index));
 	}
@@ -362,9 +388,10 @@ public:
 	// constructor
 	FloatArray(size_t size) : Array(size) {}
 
-	// deconstructor
+	// destructor
 	virtual ~FloatArray() {}
 
+	// append the given float array and return a pointer to the new float array
 	virtual FloatArray* append(FloatArray* s) {
 		size_t totalSize = currentSize_ + s->currentSize_;
 
@@ -380,11 +407,14 @@ public:
 		return ret;
 	}
 
+	// get the float at the given index
 	virtual Float* get(size_t index) {
 		return dynamic_cast<Float*>(Array::get(index));
 	}
 
+	// add the given object into the array
 	virtual void add(Object* o) {
+		// validate the given object is a float
 		if (dynamic_cast<Float*>(o) == nullptr) {
 			printf("Expected float is given for floatarray add\n");
 			exit(1);
@@ -392,12 +422,15 @@ public:
 		Array::add(o);
 	}
 
+	// add the given float into the array
 	virtual void add(float f) {
 		Float* box = new Float(f);
 		Array::add(box);
 	}
 
+	// replace the element at the given index with the given object
 	virtual void set(size_t index, Object* o) {
+		// validate the given object is a float
 		if (dynamic_cast<Float*>(o) == nullptr) {
 			printf("Expected float is given for floatarray set\n");
 			exit(1);
@@ -405,11 +438,13 @@ public:
 		Array::set(index, o);
 	}
 
+	// replace the element at the given index with the given float
 	virtual void set(size_t index, float f) {
 		Float* box = new Float(f);
 		Array::set(index, box);
 	}
 
+	// remove and return the element at the given index
 	virtual Float* remove(size_t index) {
 		return dynamic_cast<Float*>(Array::remove(index));
 	}

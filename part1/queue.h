@@ -4,7 +4,7 @@
 #include "string.h"
 #include <stdlib.h>
 
-// A Queue of Objects. Supports pushing onto the front, and popping and peeking from the end.
+// A Queue of Objects. Supports pushing onto the back, and popping and peeking from the front.
 // First in, first out.
 class Queue : public Object {
 public:
@@ -14,6 +14,7 @@ public:
     size_t headIndex_;
     size_t tailIndex_;
 
+    // set allocated size to 10 by default
     Queue() : Object() {
         allocatedSize_ = 10;
         currentSize_ = 0;
@@ -22,6 +23,7 @@ public:
         queue_ = new Object * [allocatedSize_];
     }
 
+    // set allocated size to given number
     Queue(size_t size) : Object() {
         allocatedSize_ = size;
         currentSize_ = 0;
@@ -30,10 +32,12 @@ public:
         queue_ = new Object * [allocatedSize_];
     }
 
+    // destructor
     virtual ~Queue() {
         delete[] queue_;
     }
 
+    // private helper to move given index, if last index, move to first index
     void move_next(size_t& index) {
         if (index == (allocatedSize_ - 1)) {
             index = 0;
@@ -43,13 +47,15 @@ public:
         }
     }
 
-    // Push an object onto the front of the queue.
+    // Push an object onto the end of the queue.
     virtual void push(Object* o) {
+        // if the queue is full, terminate program
         if (currentSize_ >= allocatedSize_) {
             printf("The queue is full and cannot push more elements\n");
             exit(1);
         }
 
+        // move tail index one unit to the right
         move_next(tailIndex_);
 
         queue_[tailIndex_] = o;
@@ -57,16 +63,18 @@ public:
         currentSize_ += 1;
     }
 
-    // Pop the last item off of the queue and return it.
+    // Pop the first item off of the queue and return it.
     virtual Object* pop() {
+        // if no items in the queue, terminate the program
         if (currentSize_ <= 0) {
             printf("The queue is empty and cannot pop any element\n");
             exit(1);
         }
 
         Object* ret = queue_[headIndex_];
-
+        
         queue_[headIndex_] = nullptr;
+        // move head index one unit to the right
         move_next(headIndex_);
         currentSize_ -= 1;
 
@@ -75,6 +83,7 @@ public:
 
     // Return the last item in the queue without removing it.
     virtual Object* peek() {
+        // if the queue has no elements, terminate the program
         if (currentSize_ <= 0) {
             printf("The queue is empty and cannot peek any element\n");
             exit(1);
@@ -89,6 +98,7 @@ public:
             queue_[headIndex_] = nullptr;
             move_next(headIndex_);
         }
+        // make sure to clear the last element
         queue_[headIndex_] = nullptr;
         headIndex_ = 0;
         tailIndex_ = -1;
@@ -97,7 +107,7 @@ public:
 
     // Return whether this Queue is equal to the given object.
     virtual bool equals(Object* o) {
-        // if not string list
+        // if not queue list
         if (dynamic_cast<Queue*>(o) == nullptr)
         {
             return false;
@@ -105,16 +115,16 @@ public:
 
         Queue* temp = dynamic_cast<Queue*>(o);
 
-        // validate the length
+        // validate the size
         if (currentSize_ != temp->currentSize_) {
             return false;
         }
 
         Object** temp_queue = temp->queue_;
 
-        // compare each element in the list
+        // compare each element in the queue
         for (size_t i = 0; i < currentSize_; i++) {
-            if (!queue_[(headIndex_+i)%allocatedSize_]->equals(temp_queue[(temp->headIndex_+i) % (temp->allocatedSize_)])) {
+            if (!queue_[(headIndex_+i) % allocatedSize_]->equals(temp_queue[(temp->headIndex_+i) % (temp->allocatedSize_)])) {
                 return false;
             }
         }
@@ -153,12 +163,14 @@ public:
 
     virtual ~StrQueue() {}
 
-    // Push a String onto the front of the queue.
+    // Push a String onto the end of the queue.
     virtual void push(String* s) {
         Queue::push(s);
     }
 
+    // Push the object onto the end of the queue.
     virtual void push(Object* o) {
+        // make sure the object is string
         if (dynamic_cast<String*>(o) == nullptr)
         {
             printf("Only push string into strqueue\n");
@@ -167,12 +179,12 @@ public:
         Queue::push(o);
     }
 
-    // Pop the last String off of the queue and return it.
+    // Pop the first String off of the queue and return it.
     virtual String* pop() {
         return dynamic_cast<String*>(Queue::pop());
     }
 
-    // Return the last String in the queue without removing it.
+    // Return the first String in the queue without removing it.
     virtual String* peek() {
         return dynamic_cast<String*>(Queue::peek());
     }
