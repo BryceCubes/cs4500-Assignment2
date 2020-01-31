@@ -14,7 +14,11 @@ class Map : public Object {
 
         // default constructor
         Map(){
-            Map(1024);
+            size_ = 1024;
+            pairs_ = new Pair[size_];
+            elements_ = 0;
+            clear();
+            printf("finished constructor \n");
         }
 
         // copy constructor
@@ -41,7 +45,9 @@ class Map : public Object {
         // associates the value with the key in this map
         virtual void put(Object *key, Object *value) {
             Pair *addpair = new Pair(key, value); // make new pair
+            printf("made pair \n");
             if(!contains(key)) { // check unique address
+            printf("checked contains \n");
                 pairs_[getHash(key, size_)] = *addpair; // insert new pair
                 elements_++; // increase number of elements in Map
             } else {
@@ -75,17 +81,17 @@ class Map : public Object {
 
         // removes the key value pair in this map
         Object* remove(Object* key) {
-            Object *deaditem = pairs_ + getHash(key, size_); // retrieve the dead item
+            Object *deaditem = &pairs_[getHash(key, size_)]; // retrieve the dead item
             if(contains(key)) { // check the key exists in the map
                 Pair *nullpair = new Pair(); // make a null Pair to replace item
                 pairs_[getHash(key, size_)] = *nullpair; //set space to null Pair
                 elements_--; // decrease number of elements
+                printf("before remove \n");
                 return deaditem; // return the item at this location
             } else {
-                printf("Object key does not exist in map");
-                exit(1);
+                printf("Object does not exist in Map");
+                return nullptr;
             }
-            printf("finished remove \n");
         }
 
         // clears the map
@@ -140,7 +146,7 @@ class Map : public Object {
 
         // private method returns the hash value for the given key
         size_t getHash(Object* key, size_t mod) {
+            printf("before hash \n");
             return key->hash() % mod; // use the Object's hash method and mod it by given size
-            printf("finished getHash \n");
         }
 };
